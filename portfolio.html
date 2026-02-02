@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rounak Mandal || Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Consolas, monospace;
+}
+
+body {
+    background: #05060a;
+    color: #d7e2f0;
+    overflow-x: hidden;
+}
+
+/* BACKGROUND */
+.bg {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 30% 20%, #00ffcc22, transparent 40%),
+        radial-gradient(circle at 80% 80%, #6a00ff22, transparent 45%);
+    z-index: -2;
+}
+
+/* LOADER */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #05060a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: #00ffcc;
+}
+
+#loader span::after {
+    content: "_";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* STATUS BAR */
+.status {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    font-size: 13px;
+    color: #6b7a8a;
+}
+
+/* MAIN */
+main {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 60px;
+}
+
+/* NAME */
+h1 {
+    font-size: 44px;
+    color: #ffffff;
+    position: relative;
+}
+
+h1:hover {
+    text-shadow: 
+        2px 0 #00ffcc,
+        -2px 0 #6a00ff;
+}
+
+/* TERMINAL TEXT */
+.prompt {
+    color: #00ffcc;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #7ffcff;
+    min-height: 24px;
+}
+
+.cursor::after {
+    content: "_";
+    animation: blink 1s infinite;
+}
+
+/* SECTIONS */
+.section {
+    margin-top: 30px;
+    max-width: 900px;
+}
+
+.section-title {
+    color: #00ffcc;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #c3d0e0;
+    line-height: 1.7;
+}
+
+/* SKILLS */
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.skills span {
+    padding: 8px 14px;
+    border: 1px solid #00ffcc55;
+    color: #00ffcc;
+}
+
+/* TERMINAL INPUT */
+.terminal {
+    margin-top: 40px;
+}
+
+.terminal input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e6f1ff;
+    font-size: 16px;
+}
+
+.output {
+    margin-top: 10px;
+    color: #9fb0c3;
+}
+
+/* FOOTER */
+footer {
+    position: fixed;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #6b7a8a;
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div id="loader">
+    <div>&gt; Going to Rounak Mandal's Portfolio<span></span></div>
+</div>
+
+<div class="status" id="clock"></div>
+
+<main id="main">
+    <div class="prompt">&gt; whoami</div>
+    <h1>Rounak Mandal</h1>
+    <div class="subtitle cursor" id="typing"></div>
+
+    <div class="section">
+        <div class="section-title">&gt; about</div>
+        <p>
+            Class 7 student exploring programming and technology.
+            Focused on understanding systems and improving step by step.
+        </p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">&gt; skills</div>
+        <div class="skills">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>Web Basics</span>
+            <span>Problem Solving</span>
+        </div>
+    </div>
+
+    <div class="terminal">
+        <div class="prompt">&gt; <input id="cmd" autocomplete="off" placeholder="type 'help' and press Enter"></div>
+        <div class="output" id="output"></div>
+    </div>
+</main>
+
+<footer>© 2026 • Made by Rounak Mandal</footer>
+
+<script>
+/* LOADER */
+window.onload = () => {
+    setTimeout(() => {
+        loader.style.display = "none";
+        main.style.display = "block";
+    }, 1200);
+};
+
+/* CLOCK */
+setInterval(() => {
+    const d = new Date();
+    clock.textContent = d.toLocaleTimeString();
+}, 1000);
+
+/* TYPING */
+const texts = [
+    "student developer",
+    "learning web technologies",
+    "building real skills",
+    "future software engineer"
+];
+let i=0, j=0, del=false;
+function type() {
+    const t = texts[i];
+    typing.textContent = t.slice(0, j);
+    if (!del && ++j === t.length) del = true;
+    if (del && --j === 0) { del=false; i=(i+1)%texts.length; }
+    setTimeout(type, del?60:90);
+}
+type();
+
+/* TERMINAL COMMANDS */
+cmd.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        const v = cmd.value.toLowerCase();
+        let res = "";
+
+        if (v === "help") res = "Commands: about, skills, time, whoami, clear";
+        else if (v === "about") res = "Rounak Mandal — student focused on learning programming.";
+        else if (v === "skills") res = "HTML, CSS, JavaScript, problem solving.";
+        else if (v === "time") res = new Date().toString();
+        else if (v === "whoami") res = "You are viewing Rounak Mandal's system.";
+        else if (v === "clear") output.innerHTML = "";
+        else res = "command not found";
+
+        if (v !== "clear") output.innerHTML += `<div>${res}</div>`;
+        cmd.value = "";
+    }
+});
+</script>
+
+</body>
+</html>
